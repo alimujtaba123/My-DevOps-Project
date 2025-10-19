@@ -12,29 +12,31 @@ pipeline{
         }
         stage('Build'){
             steps{
-                sh 'docker build -t ${DOCKER_IMAGE}:$BUILD_NUMBER .'
+                bat "docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% ."
             }  
         }
         stage('Test'){
             steps{
-                sh 'npm --prefix app test || true'
+                bat "npm --prefix app test || exit 0"
             }
         }
         stage('Login & Push'){
             steps{
-                withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')])
-                    { sh '''
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ${DOCKER_IMAGE}:$BUILD_NUMBER
-                        docker tag ${DOCKER_IMAGE}:$BUILD_NUMBER ${DOCKER_IMAGE}:latest
-                        docker push ${DOCKER_IMAGE}:latest '''
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')])
+                    { bat """
+                        echo Logging in to Docker Hub...
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                        docker push %DOCKER_IMAGE%:%BUILD_NUMBER%
+                        docker tag %DOCKER_IMAGE%:%BUILD_NUMBER% %DOCKER_IMAGE%:latest
+                        docker push %DOCKER_IMAGE%:latest
+                    """
                 }
             }
         }
     }
     post{
         always{
-            sh 'docker image prune -f || true'
+            bat "docker image prune -f || true"
         }
     }
 }
