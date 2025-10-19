@@ -6,7 +6,8 @@ pipeline{
     }
     stages{
         stage('Checkout Code'){
-            steps{git url: 'https://github.com/alimujtaba123/My-DevOps-Project.git', branch: 'main' 
+            steps{
+                git url: 'https://github.com/alimujtaba123/My-DevOps-Project.git', branch: 'main' 
             }
         }
         stage('Build'){
@@ -16,8 +17,10 @@ pipeline{
             
         }
         stage('Test'){
-            steps{sh 'npm --prefix app test || true'
-        }}
+            steps{
+                sh 'npm --prefix app test || true'
+            }
+        }
         stage('Login & Push'){
             steps{
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')])
@@ -26,8 +29,9 @@ pipeline{
                         docker push ${DOCKER_IMAGE}:$BUILD_NUMBER
                         docker tag ${DOCKER_IMAGE}:$BUILD_NUMBER ${DOCKER_IMAGE}:latest
                         docker push ${DOCKER_IMAGE}:latest '''
+                }
             }
-        }}
+        }
     }
     post{
         always{
