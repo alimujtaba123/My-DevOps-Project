@@ -36,7 +36,7 @@ pipeline{
     }
     post{
         always{
-            bat "docker image prune -f || true"
+            bat "docker image prune -f || exit 0"
         }
     }
 }
