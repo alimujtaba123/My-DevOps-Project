@@ -14,6 +14,8 @@ pipeline{
             steps{
                 bat '''
                 echo Building Docker Image...
+                cd "%WORKSPACE%"
+                dir
                 docker build -t mujtaba110/devops-app:%BUILD_NUMBER% -f "%WORKSPACE%\\Dockerfile" "%WORKSPACE%"
                 '''
 
