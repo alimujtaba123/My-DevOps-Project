@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
 res.json({
-message: 'Hello from Mujtabas Project!',
+message: 'Hello from Mujji Project!',
 host: os.hostname(),
 time: new Date().toISOString()
 });
