@@ -12,7 +12,8 @@ pipeline{
         }
         stage('Build'){
             steps{
-                bat "docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% ."
+                bat "docker build -t mujtaba110/devops-app:%BUILD_NUMBER% -f Dockerfile ."
+
             }  
         }
         stage('Test'){
