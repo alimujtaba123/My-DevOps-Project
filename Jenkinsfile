@@ -16,8 +16,9 @@ pipeline{
                 echo Building Docker Image...
                 cd "%WORKSPACE%"
                 dir
-                docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% -f "%WORKSPACE%\\app\Dockerfile" "%WORKSPACE%\\app"
+                docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% -f "%WORKSPACE%\\app\\Dockerfile" "%WORKSPACE%\\app"
                 '''
+
 
             }  
         }
